@@ -1,9 +1,14 @@
 pipeline {
     agent any
     stages {
+        stage('git clone') {
+            // Git clone from the specified repository and branch
+            git branch: 'main', url: 'https://github.com/MingyuRomeoKim/Weak-will-study-spring-api.git'
+        }
         stage('build') {
             steps {
-                echo 'building the application...'
+                // Run the gradle build
+                sh './gradlew clean bootJar'
             }
         }
         stage('test') {
@@ -13,7 +18,8 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                echo 'deploying the application...'
+                // Run the built JAR file in the background
+                sh 'nohup java -jar build/libs/*SNAPSHOT.jar > nohup.out 2>&1 &'
             }
         }
     }
