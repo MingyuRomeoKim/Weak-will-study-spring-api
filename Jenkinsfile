@@ -1,26 +1,47 @@
 pipeline {
     agent any
+
+    triggers {
+        // This will trigger the pipeline on every push to the repository
+        pollSCM('* * * * *')
+    }
+
     stages {
-        stage('git clone') {
-            // Git clone from the specified repository and branch
-            git branch: 'main', url: 'https://github.com/MingyuRomeoKim/Weak-will-study-spring-api.git'
+        stage('Checkout') {
+            steps {
+                // Checking out the code from the repository
+                checkout scm
+            }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
                 // Run the gradle build
-                sh './gradlew clean bootJar'
+                sh './gradlew clean build'
             }
         }
-        stage('test') {
+
+        stage('Test') {
             steps {
-                echo 'testing the application...'
+                echo 'Testing the application...'
+                // Run tests (if any)
+                sh './gradlew test'
             }
         }
-        stage('deploy') {
+
+        stage('Deploy') {
             steps {
-                // Run the built JAR file in the background
-                sh 'nohup java -jar build/libs/*SNAPSHOT.jar > nohup.out 2>&1 &'
+                // Deploy the application
+                // Make sure to adjust the path to the JAR file according to your project structure
+                sh 'nohup java -jar build/libs/*SNAPSHOT.jar > /dev/null 2>&1 &'
             }
+        }
+    }
+
+    post {
+        always {
+            // Clean up the workspace to free up space
+            cleanWs()
         }
     }
 }
