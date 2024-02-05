@@ -33,7 +33,13 @@ pipeline {
             steps {
                 // Deploy the application
                 // Make sure to adjust the path to the JAR file according to your project structure
-                sh 'nohup java -jar build/libs/*SNAPSHOT.jar > /dev/null 2>&1 &'
+                // sh 'nohup java -jar build/libs/*SNAPSHOT.jar > /dev/null 2>&1 &'
+                // sh 'nohup java -jar build/libs/*SNAPSHOT.jar > nohup.out 2>&1 &'
+                sh '''
+                cp build/libs/*SNAPSHOT.jar ~/deploy/
+                echo $(date +"%Y-%m-%d %H:%M:%S") > ~/deploy/deploy.txt
+                '''
+
             }
         }
     }
