@@ -3,7 +3,7 @@ pipeline {
 
     triggers {
         // This will trigger the pipeline on every push to the repository
-        pollSCM('* * * * *')
+        pollSCM('H * * * *')
     }
 
     stages {
