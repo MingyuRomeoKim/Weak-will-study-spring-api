@@ -1,0 +1,11 @@
+CREATE TABLE MANAGER
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    email      VARCHAR(255) NOT NULL,
+    name       VARCHAR(100),
+    password   VARCHAR(100) NOT NULL,
+    phone      VARCHAR(20),
+    address    VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
